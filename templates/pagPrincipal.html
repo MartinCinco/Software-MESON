@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MESON</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        .container {
+            margin: 20px;
+        }
+        .card {
+            display: inline-block;
+            background: white;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .btn {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .btn-green { background: green; }
+        .btn-red { background: red; }
+        .btn-yellow { background: orange; }
+        .container2 {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .cita {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f1f1f1;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        .modal-content {
+            background: white;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 40%;
+            text-align: left;
+        }
+        .close {
+            float: right;
+            font-size: 24px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>MESON</h1>
+    <nav>
+        <a href="{{ url_for('principal') }}">Inicio</a>
+        <a href="{{ url_for('ventas') }}">Módulo de Ventas</a>
+        <a href="{{ url_for('ingresos') }}">Ingresos y Egresos</a>
+        <a href="{{ url_for('mantenimiento') }}">Mantenimiento y Gastos</a>
+        <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
+    </nav>
+</header>
+
+<div class="container">
+    <div class="card"><h2>Ingresos</h2><p>$50,000</p></div>
+    <div class="card"><h2>Egresos</h2><p>$20,000</p></div>
+    <div class="card"><h2>Utilidad Neta</h2><p>$30,000</p></div>
+</div>
+
+<div class="container2">
+    <h2>Próximas Citas</h2>
+    {% for cita in citas %}
+        <div class="cita" id="cita-{{ loop.index0 }}">
+            <span>{{ cita.fecha }} - {{ cita.descripcion }}</span>
+            <div>
+                <button class="btn btn-green" onclick="marcarListo({{ loop.index0 }})">✔</button>
+                <button class="btn btn-red" onclick="cancelarCita({{ loop.index0 }})">✖</button>
+                <button class="btn btn-yellow" onclick="openEditModal('{{ cita.fecha }}', '{{ cita.descripcion }}', {{ loop.index0 }})">📝</button>
+            </div>
+        </div>
+    {% endfor %}
+    <button class="btn" onclick="document.getElementById('addModal').style.display='block'">➕ Agregar Cita</button>
+</div>
+
+<!-- Modal para agregar cita -->
+<div id="addModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="document.getElementById('addModal').style.display='none'">&times;</span>
+        <h2>Agregar Nueva Cita</h2>
+        <form id="addForm" onsubmit="event.preventDefault(); agregarCita();">
+            <label>Fecha:</label>
+            <input type="date" id="addFecha" required>
+            <label>Descripción:</label>
+            <input type="text" id="addDescripcion" required>
+            <button type="submit" class="btn">Guardar</button>
+        </form>
+    </div>
+</div>
+
+<!-- Modal para modificar cita -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="document.getElementById('editModal').style.display='none'">&times;</span>
+        <h2>Modificar Cita</h2>
+        <form id="editForm" onsubmit="event.preventDefault(); guardarModificacion();">
+            <input type="hidden" id="editIndex">
+            <label>Fecha:</label>
+            <input type="date" id="editFecha" required>
+            <label>Descripción:</label>
+            <input type="text" id="editDescripcion" required>
+            <button type="submit" class="btn">Guardar cambios</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openEditModal(fecha, descripcion, index) {
+        document.getElementById("editFecha").value = fecha;
+        document.getElementById("editDescripcion").value = descripcion;
+        document.getElementById("editIndex").value = index;
+        document.getElementById("editModal").style.display = "block";
+    }
+
+    function guardarModificacion() {
+        let index = document.getElementById("editIndex").value;
+        let nuevaFecha = document.getElementById("editFecha").value;
+        let nuevaDescripcion = document.getElementById("editDescripcion").value;
+
+        fetch(/modificar/${index}, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nueva_fecha: nuevaFecha, nueva_descripcion: nuevaDescripcion })
+        }).then(response => response.json())
+          .then(data => {
+              if (data.success) {
+                  let cita = document.getElementById(cita-${index});
+                  cita.querySelector("span").textContent = ${nuevaFecha} - ${nuevaDescripcion};
+                  document.getElementById("editModal").style.display = "none";
+              }
+          });
+    }
+
+    function cancelarCita(index) {
+        fetch(/cancelar/${index}, { method: "POST" })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById(cita-${index}).remove();
+                }
+            });
+    }
+</script>
+<script>
+    function agregarCita() {
+        let fecha = document.getElementById("addFecha").value;
+        let descripcion = document.getElementById("addDescripcion").value;
+
+        fetch("/agregar", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ fecha: fecha, descripcion: descripcion })
+        }).then(response => response.json())
+          .then(data => {
+              if (data.success) {
+                  // Agregar la nueva cita a la lista sin recargar la página
+                  let citasContainer = document.querySelector(".container2");
+                  let nuevaCita = document.createElement("div");
+                  nuevaCita.classList.add("cita");
+                  nuevaCita.id = cita-${data.index};
+                  nuevaCita.innerHTML = 
+                      <span>${fecha} - ${descripcion}</span>
+                      <div>
+                          <button class="btn btn-green" onclick="marcarListo(${data.index})">✔</button>
+                          <button class="btn btn-red" onclick="cancelarCita(${data.index})">✖</button>
+                          <button class="btn btn-yellow" onclick="openEditModal('${fecha}', '${descripcion}', ${data.index})">📝</button>
+                      </div>
+                  ;
+                  citasContainer.appendChild(nuevaCita);
+
+                  // Limpiar campos y cerrar modal
+                  document.getElementById("addFecha").value = "";
+                  document.getElementById("addDescripcion").value = "";
+                  document.getElementById("addModal").style.display = "none";
+              } else {
+                  alert("Error al agregar la cita. Intenta de nuevo.");
+              }
+          }).catch(error => console.error("Error:", error));
+    }
+</script>
+
+
+
+</body>
+</html>
