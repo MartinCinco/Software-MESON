@@ -3,10 +3,11 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify, s
 app = Flask(__name__)
 
 # Lista de citas iniciales
+next_id = 4
 citas = [
-    {"fecha": "10/03/2025", "descripcion": "Revisión financiera"},
-    {"fecha": "15/03/2025", "descripcion": "Pago de impuestos"},
-    {"fecha": "20/03/2025", "descripcion": "Auditoría interna"}
+    {"id": 1, "fecha": "10/03/2025", "descripcion": "Revisión financiera"},
+    {"id": 2, "fecha": "15/03/2025", "descripcion": "Pago de impuestos"},
+    {"id": 3, "fecha": "20/03/2025", "descripcion": "Auditoría interna"}
 ]
 
 app.secret_key = 'clave_secreta'
@@ -35,7 +36,7 @@ def logout():
 def principal():
     if 'usuario' not in session:
         return redirect(url_for('login'))  # Evita acceso sin autenticación
-    return render_template('pagPrincipal.html')
+    return render_template('pagPrincipal.html', citas=citas)
 
 @app.route('/ventas')
 def ventas():
@@ -50,38 +51,52 @@ def mantenimiento():
     return render_template('ventas.html')
 
 
-@app.route('/marcar_listo/<int:index>', methods=['POST'])
-def marcar_listo(index):
-    if 0 <= index < len(citas):
-        citas.pop(index)  # Elimina la cita
-    return jsonify(success=True)
+@app.route('/cancelar/<int:id>', methods=['POST'])
+def cancelar(id):
+    global citas
+    cita = next((c for c in citas if c["id"] == id), None)
+    if cita:
+        citas.remove(cita)
+        return jsonify(success=True)
+    return jsonify(success=False, error="Cita no encontrada"), 404
 
-@app.route('/cancelar/<int:index>', methods=['POST'])
-def cancelar(index):
-    if 0 <= index < len(citas):
-        citas.pop(index)  # Elimina la cita
-    return jsonify(success=True)
+@app.route('/marcar_listo/<int:id>', methods=['POST'])
+def marcar_listo(id):
+    global citas
+    cita = next((c for c in citas if c["id"] == id), None)
+    if cita:
+        citas.remove(cita)
+        return jsonify(success=True)
+    return jsonify(success=False, error="Cita no encontrada"), 404
 
-@app.route('/modificar/<int:index>', methods=['POST'])
-def modificar(index):
+@app.route('/modificar/<int:id>', methods=['POST'])
+def modificar(id):
     try:
         data = request.json
         nueva_fecha = data.get('nueva_fecha')
-        if 0 <= index < len(citas) and nueva_fecha:
-            citas[index]['fecha'] = nueva_fecha
+        nueva_descripcion = data.get('nueva_descripcion')
+        cita = next((c for c in citas if c["id"] == id), None)
+        if cita and nueva_fecha and nueva_descripcion:
+            cita['fecha'] = nueva_fecha
+            cita['descripcion'] = nueva_descripcion
             return jsonify(success=True)
-        return jsonify(success=False, error="Índice inválido o datos faltantes"), 400
+        return jsonify(success=False, error="Datos inválidos o cita no encontrada"), 400
     except Exception as e:
         return jsonify(success=False, error=str(e)), 500
 
 @app.route('/agregar', methods=['POST'])
 def agregar():
+    global next_id, citas
     data = request.json
     fecha = data.get('fecha')
     descripcion = data.get('descripcion')
     if fecha and descripcion:
-        citas.append({"fecha": fecha, "descripcion": descripcion})
-    return jsonify(success=True)
+        nueva_cita = {"id": next_id, "fecha": fecha, "descripcion": descripcion}
+        citas.append(nueva_cita)
+        next_id += 1
+        return jsonify(success=True, id=nueva_cita["id"])
+    return jsonify(success=False)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
