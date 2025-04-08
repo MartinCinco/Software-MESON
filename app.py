@@ -40,15 +40,21 @@ def principal():
 
 @app.route('/ventas')
 def ventas():
-    return render_template('ventas.html')
+    if 'usuario' not in session:
+        return redirect(url_for('login'))  # Evita acceso sin autenticación
+    return render_template('pagModuloVentas.html')
 
 @app.route('/ingresos')
 def ingresos():
-    return render_template('ventas.html')
+    if 'usuario' not in session:
+        return redirect(url_for('login'))  # Evita acceso sin autenticación
+    return render_template('pagModuloIngresoEgreso.html')
 
 @app.route('/mantenimiento')
 def mantenimiento():
-    return render_template('ventas.html')
+    if 'usuario' not in session:
+        return redirect(url_for('login'))  # Evita acceso sin autenticación
+    return render_template('pagModuloMantenimientoGasto.html')
 
 
 @app.route('/cancelar/<int:id>', methods=['POST'])
