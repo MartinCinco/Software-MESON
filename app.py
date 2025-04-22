@@ -119,5 +119,5 @@ if __name__ == '__main__':
     time.sleep(2)  # espera mínima para asegurar que Flask arranque
 
     print("Lanzando ventana...")
-    webview.create_window("Mi App Escritorio", "http://127.0.0.1:5000")
+    webview.create_window("Software-MESON", "http://127.0.0.1:5000")
     webview.start(debug=True)
