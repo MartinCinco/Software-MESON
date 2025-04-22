@@ -1,3 +1,5 @@
+import threading
+import webview
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session
 
 app = Flask(__name__)
@@ -13,6 +15,9 @@ citas = [
 app.secret_key = 'clave_secreta'
 
 usuarios = {"admin": "1234"}  # Base de datos simulada
+
+def start_flask():
+    app.run(port=5000)
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
@@ -105,4 +110,14 @@ def agregar():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    print("Iniciando servidor Flask...")
+    flask_thread = threading.Thread(target=start_flask)
+    flask_thread.daemon = True
+    flask_thread.start()
+
+    import time
+    time.sleep(2)  # espera mínima para asegurar que Flask arranque
+
+    print("Lanzando ventana...")
+    webview.create_window("Mi App Escritorio", "http://127.0.0.1:5000")
+    webview.start(debug=True)
