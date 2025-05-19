@@ -11,20 +11,59 @@
             padding: 0;
             background-color: #f4f4f4;
             text-align: center;
+            background-image: url("/static/resources/lg-bg.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        html, body {
+            height: 100%;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
         }
         header {
-            background-color: #007bff;
+            background-color: #EDE1C0B3;
             color: white;
-            padding: 15px;
+            padding: 0px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: stretch;
+            height: 100px;
+        }
+        nav {
+            display: flex;
+            height: 100%;
         }
         nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
+            color: black;
+            background: none;
+            padding: 0px 28px;
+            margin: 0;
+            border-radius: 0;
             font-weight: bold;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s,
+                        box-shadow 0.2s;
+            box-shadow: none;
+            border: none;
+            display: flex;
+            align-items: center;
+            height:100%;
+        }
+        nav a:hover {
+            background: #af6b0d;
+            color: #f0cf94;
+            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.12);
+            text-decoration: none;
+        }
+        .logo {
+            width: 75px;
+            height: 75px;
+            margin-top: 12.5px;
+            margin-bottom: 12.5px;
+            margin-left: 20px;
+            align-self: center;
         }
         .container {
             margin: 20px;
@@ -97,13 +136,13 @@
 <body>
 
 <header>
-    <h1>MESON</h1>
+    <img src="{{ url_for('static', filename='resources/logo-wl.png') }}" alt="MESON Logo" class="logo">
     <nav>
-        <a href="{{ url_for('main.principal') }}">Inicio</a>
-        <a href="{{ url_for('main.ventas') }}">Módulo de Ventas</a>
-        <a href="{{ url_for('main.ingresos') }}">Ingresos y Egresos</a>
-        <a href="{{ url_for('main.mantenimiento') }}">Mantenimiento y Gastos</a>
-        <a href="{{ url_for('main.logout') }}">Cerrar Sesión</a>
+        <a href="{{ url_for('main.principal') }}">INICIO</a>
+        <a href="{{ url_for('main.ventas') }}">VENTAS</a>
+        <a href="{{ url_for('main.ingresos') }}">INGRESOS & EGRESOS</a>
+        <a href="{{ url_for('main.mantenimiento') }}">MANTENIMIENTO & GASTOS</a>
+        <a href="{{ url_for('main.logout') }}">CERRAR SESIÓN</a>
     </nav>
 </header>
 

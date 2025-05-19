@@ -11,27 +11,66 @@
             padding: 0;
             background-color: #f4f4f4;
             text-align: center;
+            background-image: url("/static/resources/lg-bg.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        html, body {
+            height: 100%;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
         }
         header {
-            background-color: #007bff;
+            background-color: #EDE1C0B3;
             color: white;
-            padding: 15px;
+            padding: 0px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: stretch;
+            height: 100px;
+        }
+        nav {
+            display: flex;
+            height: 100%;
         }
         nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
+            color: black;
+            background: none;
+            padding: 0px 28px;
+            margin: 0;
+            border-radius: 0;
             font-weight: bold;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s,
+                        box-shadow 0.2s;
+            box-shadow: none;
+            border: none;
+            display: flex;
+            align-items: center;
+            height:100%;
+        }
+        nav a:hover {
+            background: #af6b0d;
+            color: #f0cf94;
+            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.12);
+            text-decoration: none;
+        }
+        .logo {
+            width: 75px;
+            height: 75px;
+            margin-top: 12.5px;
+            margin-bottom: 12.5px;
+            margin-left: 20px;
+            align-self: center;
         }
         .container {
             margin: 20px;
         }
         .card {
             display: inline-block;
-            background: white;
+            background: rgba(237, 225, 192, 0.7);
             padding: 20px;
             margin: 10px;
             border-radius: 8px;
@@ -39,8 +78,8 @@
         }
         .btn {
             display: inline-block;
-            background: #007bff;
-            color: white;
+            background-color: #d48d20;
+            color: #f0cf94;
             padding: 10px 20px;
             margin: 5px;
             border: none;
@@ -49,14 +88,22 @@
             font-size: 16px;
             cursor: pointer;
         }
-        .btn-green { background: green; }
-        .btn-red { background: red; }
-        .btn-yellow { background: orange; }
+        .btn:hover {background-color: #af6b0d; }
+        .btn-green { background: rgb(90, 255, 90); }
+        .btn-green:hover { background: green; }
+        .btn-red { background: rgb(255, 90, 90); }
+        .btn-red:hover { background: red; }
+        .btn-yellow { background: rgb(255, 200, 90); }
+        .btn-yellow:hover { background: orange; }
+        .btn-guardar {
+            align-self: flex-end;
+            margin-top: 20px;
+        }
         .container2 {
             width: 80%;
             margin: auto;
             padding: 20px;
-            background: white;
+            background: rgba(237, 225, 192, 0.7);
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
@@ -64,10 +111,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #f1f1f1;
+            border: 1px solid#cdb38f;
+            border-radius: 5px;
+            background: #f0cf94;
             padding: 10px;
             margin: 5px 0;
-            border-radius: 5px;
         }
         .modal {
             display: none;
@@ -80,30 +128,93 @@
             background: rgba(0, 0, 0, 0.5);
         }
         .modal-content {
-            background: white;
+            position: relative;
+            background: rgba(237, 225, 192, 1);
             margin: 15% auto;
-            padding: 20px;
+            padding: 20px 20px 10px 20px;
             border-radius: 10px;
-            width: 40%;
+            width: 25%;
             text-align: left;
         }
+        .modal-content,
+        .modal-content form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: stretch;
+        }
+        .modal-content h2 {
+            text-align: left;
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+        .modal-content label,
+        .modal-content input {
+            text-align: left;
+            align-self: flex-start;
+            width: 100%;
+        }
+        .modal-content label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+        .modal-content input[type="date"] {
+            width: 20%;
+            min-width: 100px;
+            max-width: 250px;
+            height: 20px;
+            font-size: 14px;
+            font-family: 'Montserrat', sans-serif;
+            border: 1px solid#cdb38f;
+            border-radius: 2.5px; 
+            background-color: #f0cf94;
+            padding: 6px 8px;
+        }
+        .modal-content input[type="text"] {
+            width: 100%;
+            height: 32px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            padding: 6px 8px;
+            border: 1px solid#cdb38f;
+            border-radius: 2.5px; 
+            background-color: #f0cf94;
+            box-sizing: border-box;
+        }
+        
+        .modal-content .btn-guardar {
+            align-self: flex-end;
+            margin-top: 25px;
+        }
         .close {
-            float: right;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            width: auto;
+            height: auto;
+            float: none;
             font-size: 24px;
             cursor: pointer;
+            padding: 2px 8px;
+            background: none;
+            border: none;
+            line-height: 1;
+            z-index: 2;
+            display: inline-block;
         }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>MESON</h1>
+    <img src="{{ url_for('static', filename='resources/logo-wl.png') }}" alt="MESON Logo" class="logo">
     <nav>
-        <a href="{{ url_for('main.principal') }}">Inicio</a>
-        <a href="{{ url_for('main.ventas') }}">Módulo de Ventas</a>
-        <a href="{{ url_for('main.ingresos') }}">Ingresos y Egresos</a>
-        <a href="{{ url_for('main.mantenimiento') }}">Mantenimiento y Gastos</a>
-        <a href="{{ url_for('main.logout') }}">Cerrar Sesión</a>
+        <a href="{{ url_for('main.principal') }}">INICIO</a>
+        <a href="{{ url_for('main.ventas') }}">VENTAS</a>
+        <a href="{{ url_for('main.ingresos') }}">INGRESOS & EGRESOS</a>
+        <a href="{{ url_for('main.mantenimiento') }}">MANTENIMIENTO & GASTOS</a>
+        <a href="{{ url_for('main.logout') }}">CERRAR SESIÓN</a>
     </nav>
 </header>
 
@@ -114,7 +225,7 @@
 </div>
 
 <div class="container2">
-    <h2>Próximas Citas</h2>
+    <h2>CITAS PRÓXIMAS</h2>
     {% for cita in citas %}
     <div class="cita" id="cita-{{ cita.id }}">
         <span>{{ cita.fecha }} - {{ cita.descripcion }}</span>
@@ -126,20 +237,20 @@
     </div>
     {% endfor %}
 
-    <button class="btn" onclick="document.getElementById('addModal').style.display='block'">➕ Agregar Cita</button>
+    <button class="btn" onclick="document.getElementById('addModal').style.display='block'"> ➕ AGREGAR CITA  </button>
 </div>
 
 <!-- Modal para agregar cita -->
 <div id="addModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="document.getElementById('addModal').style.display='none'">&times;</span>
-        <h2>Agregar Nueva Cita</h2>
+        <h2>AGENDAR CITA 📅</h2>
         <form id="addForm" onsubmit="event.preventDefault(); agregarCita();">
-            <label>Fecha:</label>
+            <label>[FECHA]</label>
             <input type="date" id="addFecha" required>
-            <label>Descripción:</label>
+            <label>[DESCRIPCIÓN]</label>
             <input type="text" id="addDescripcion" required>
-            <button type="submit" class="btn">Guardar</button>
+            <button type="submit" class="btn btn-guardar">GUARDAR</button>
         </form>
     </div>
 </div>
@@ -148,14 +259,14 @@
 <div id="editModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="document.getElementById('editModal').style.display='none'">&times;</span>
-        <h2>Modificar Cita</h2>
+        <h2>MODIFICAR CITA 📝📅</h2>
         <form id="editForm" onsubmit="event.preventDefault(); guardarModificacion();">
             <input type="hidden" id="editIndex">
-            <label>Fecha:</label>
+            <label>[FECHA]</label>
             <input type="date" id="editFecha" required>
-            <label>Descripción:</label>
+            <label>[DESCRIPCIÓN]</label>
             <input type="text" id="editDescripcion" required>
-            <button type="submit" class="btn">Guardar cambios</button>
+            <button type="submit" class="btn btn-guardar">GUARDAR CAMBIOS</button>
         </form>
     </div>
 </div>
@@ -247,8 +358,9 @@
                           <button class="btn btn-yellow" onclick="openEditModal('${fecha}', '${descripcion}', ${data.id})">📝</button>
                       </div>
                   `;
-                  citasContainer.appendChild(nuevaCita);
-    
+              let botonAgregar = citasContainer.querySelector(".container2 > button.btn");
+              citasContainer.insertBefore(nuevaCita, botonAgregar); 
+  
                   document.getElementById("addFecha").value = "";
                   document.getElementById("addDescripcion").value = "";
                   document.getElementById("addModal").style.display = "none";
