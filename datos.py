@@ -4,6 +4,24 @@ import sqlite3
 conn = sqlite3.connect("base.db")
 cursor = conn.cursor()
 
+# Crear tabla usuarios
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS usuarios (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    usuario TEXT NOT NULL,
+    contrasena TEXT NOT NULL
+)
+''')
+
+# Crear tabla citas
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS citas (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    fecha TEXT NOT NULL,
+    descripcion TEXT
+)
+''')
+
 # Crear tabla 'ventas'
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS ventas (
@@ -26,6 +44,12 @@ CREATE TABLE IF NOT EXISTS ventas (
     hora TEXT
 );
 """)
+
+# Insertar usuario admin
+cursor.execute('''
+INSERT INTO usuarios (usuario, contrasena)
+VALUES (?, ?)
+''', ('admin', '1234'))
 
 # Guardar cambios y cerrar conexión
 conn.commit()
