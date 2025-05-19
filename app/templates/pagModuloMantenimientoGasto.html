@@ -107,104 +107,13 @@
     </nav>
 </header>
 
+<div style="display: flex; justify-content: center; align-items: center; height: 80vh; flex-direction: column;">
+    <a href="{{ url_for('main.sanpedro') }}" class="btn btn-green">SAN PEDRO 1</a>
+    <a href="{{ url_for('main.sanpedro') }}" class="btn btn-yellow">SAN PEDRO 2</a>
+    <a href="{{ url_for('main.sanpedro') }}" class="btn btn-red">SAN PEDRO 3</a>
+</div>
 
 <script>
-    function openEditModal(fecha, descripcion, id) {
-        // Si la fecha viene en formato "dd/mm/yyyy", conviértela a "yyyy-mm-dd" para el input date
-        let fechaISO = fecha;
-        if (fecha.includes("/")) {
-            let partes = fecha.split("/");
-            if (partes.length === 3) {
-                fechaISO = `${partes[2]}-${partes[1].padStart(2, '0')}-${partes[0].padStart(2, '0')}`;
-            }
-        }
-        document.getElementById("editFecha").value = fechaISO;
-        document.getElementById("editDescripcion").value = descripcion;
-        document.getElementById("editIndex").value = id;  // Ahora es id
-        document.getElementById("editModal").style.display = "block";
-    }
-    
-    function guardarModificacion() {
-        let id = document.getElementById("editIndex").value;
-        let nuevaFecha = document.getElementById("editFecha").value;
-        let nuevaDescripcion = document.getElementById("editDescripcion").value;
-    
-        console.log("Enviando modificación:", id, nuevaFecha, nuevaDescripcion);
-    
-        fetch(`/modificar/${id}`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ nueva_fecha: nuevaFecha, nueva_descripcion: nuevaDescripcion })
-        }).then(response => response.json())
-          .then(data => {
-              console.log("Respuesta del servidor:", data);
-              if (data.success) {
-                  let cita = document.getElementById(`cita-${id}`);
-                  cita.querySelector("span").textContent = `${nuevaFecha} - ${nuevaDescripcion}`;
-                  document.getElementById("editModal").style.display = "none";
-              } else {
-                  alert("Error al modificar la cita: " + data.error);
-              }
-          });
-    }
-    
-    function cancelarCita(id) {
-        fetch(`/cancelar/${id}`, { method: "POST" })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    document.getElementById(`cita-${id}`).remove();
-                } else {
-                    alert("Error: " + data.error);
-                }
-            });
-    }
-    
-    function marcarListo(id) {
-        fetch(`/marcar_listo/${id}`, { method: "POST" })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    document.getElementById(`cita-${id}`).remove();
-                } else {
-                    alert("Error: " + data.error);
-                }
-            });
-    }
-    
-    function agregarCita() {
-        let fecha = document.getElementById("addFecha").value;
-        let descripcion = document.getElementById("addDescripcion").value;
-    
-        fetch("/agregar", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ fecha: fecha, descripcion: descripcion })
-        }).then(response => response.json())
-          .then(data => {
-              if (data.success) {
-                  let citasContainer = document.querySelector(".container2");
-                  let nuevaCita = document.createElement("div");
-                  nuevaCita.classList.add("cita");
-                  nuevaCita.id = `cita-${data.id}`;
-                  nuevaCita.innerHTML = `
-                      <span>${fecha} - ${descripcion}</span>
-                      <div>
-                          <button class="btn btn-green" onclick="marcarListo(${data.id})">✔</button>
-                          <button class="btn btn-red" onclick="cancelarCita(${data.id})">✖</button>
-                          <button class="btn btn-yellow" onclick="openEditModal('${fecha}', '${descripcion}', ${data.id})">📝</button>
-                      </div>
-                  `;
-                  citasContainer.appendChild(nuevaCita);
-    
-                  document.getElementById("addFecha").value = "";
-                  document.getElementById("addDescripcion").value = "";
-                  document.getElementById("addModal").style.display = "none";
-              } else {
-                  alert("Error al agregar la cita. Intenta de nuevo.");
-              }
-          }).catch(error => console.error("Error:", error));
-    }           
 </script>    
 </body>
 </html>

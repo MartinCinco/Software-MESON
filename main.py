@@ -17,4 +17,4 @@ if __name__ == '__main__':
     time.sleep(2)
     print("Lanzando ventana...")
     webview.create_window("Software-MESON", "http://127.0.0.1:5000")
-    webview.start(debug=True)
+    webview.start(debug=False)

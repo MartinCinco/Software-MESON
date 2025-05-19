@@ -50,6 +50,12 @@ def mantenimiento():
         return redirect(url_for('main.login'))
     return render_template('pagModuloMantenimientoGasto.html')
 
+@main_routes.route('/sanpedro')
+def sanpedro():
+    if requiere_login():
+        return redirect(url_for('main.login'))
+    return render_template('sanpedro.html')
+
 @main_routes.route('/cancelar/<int:id>', methods=['POST'])
 @main_routes.route('/marcar_listo/<int:id>', methods=['POST'])
 def eliminar_cita(id):
