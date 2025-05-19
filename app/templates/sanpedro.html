@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>MANTENIMIENTO SAN PEDRO 1</title>
     <style>
         body {
@@ -31,11 +31,30 @@
             font-weight: bold;
         }
         input[type="text"] {
-            width: 100%;
             padding: 8px;
             margin-top: 5px;
             border-radius: 5px;
             border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        /* Estilo para agrupar input y botón lado a lado */
+        .input-with-button {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        .input-with-button input[type="text"] {
+            flex-grow: 1;
+        }
+        button.btn-search {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 9px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
         }
         .info {
             margin-top: 15px;
@@ -74,25 +93,30 @@
 <div class="container">
     <h2>MANTENIMIENTO SAN PEDRO 1</h2>
 
-    <label for="nombre">A nombre de:</label>
-    <input type="text" id="nombre" name="nombre">
+    <!-- Formulario que envía los datos al backend -->
+    <form action="{{ url_for('main.buscar_pago') }}" method="post">
+        <label for="nombre">A nombre de:</label>
+        <div class="input-with-button">
+            <input type="text" id="nombre" name="nombre" required />
+            <button type="submit" class="btn-search">Buscar</button>
+        </div>
 
-    <label for="lote">Lote:</label>
-    <input type="text" id="lote" name="lote">
+        <label for="lote">Lote:</label>
+        <input type="text" id="lote" name="lote" />
 
-    <label for="manzana">Manzana:</label>
-    <input type="text" id="manzana" name="manzana">
+        <label for="manzana">Manzana:</label>
+        <input type="text" id="manzana" name="manzana" />
 
-    <div class="info">
-        <p><strong>Sección:</strong> [información]</p>
-        <p><strong>Vencimiento:</strong> [información]</p>
-        <p><strong>Cuota Mensual:</strong> [información]</p>
-        <p><strong>Último mes para pagar:</strong> [información]</p>
-    </div>
-
+        <div class="info">
+            <p><strong>Sección:</strong> [información]</p>
+            <p><strong>Vencimiento:</strong> [información]</p>
+            <p><strong>Cuota Mensual:</strong> [información]</p>
+            <p><strong>Último mes para pagar:</strong> [información]</p>
+        </div>
+    </form>
     <div class="btn-container">
         <button class="btn btn-blue">Añadir pago</button>
-        <a href="{{ url_for('main.mantenimiento') }}" class="btn btn-grey">Salir</a>
+        <a href="main.mantenimiento" class="btn btn-grey">Salir</a>
     </div>
 </div>
 

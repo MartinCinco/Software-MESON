@@ -33,6 +33,13 @@ def principal():
     conn.close()
     return render_template('pagPrincipal.html', citas=citas)
 
+@main_routes.route('/buscar_pago', methods=['POST'])
+def buscar_pago():
+    nombre = request.form.get('nombre')
+    lote = request.form.get('lote')
+    manzana = request.form.get('manzana')
+    return render_template('sanpedro1.html', nombre=nombre, lote=lote, manzana=manzana)
+
 @main_routes.route('/ventas')
 def ventas():
     if requiere_login():
