@@ -80,13 +80,24 @@
             display: inline-block;
             background: rgba(237, 225, 192, 0.7);;
             color: black;
-            padding: 10px 20px;
+            padding: 50px 50px;
             margin: 5px;
             border: none;
             border-radius: 5px;
             text-decoration: none;
             font-size: 16px;
             cursor: pointer;
+                        transition: background 0.2s, color 0.2s,
+                        box-shadow 0.2s;
+        }
+        .btn:hover {
+            background: #af6b0d;
+            color: #f0cf94;
+            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.12);
+            text-decoration: none;
+        }
+        .seccion-label {
+            font-size: 14px;
         }
         .container2 {
             width: 80%;
@@ -139,14 +150,23 @@
         <a href="{{ url_for('main.ventas') }}">VENTAS</a>
         <a href="{{ url_for('main.ingresos') }}">INGRESOS & EGRESOS</a>
         <a href="{{ url_for('main.mantenimiento') }}">MANTENIMIENTO & GASTOS</a>
-        <a href="{{ url_for('main.logout') }}">CERRAR SESIÓN</a>
+        <a href="{{ url_for('main.logout') }}">CERRAR SESIÓN</a
     </nav>
 </header>
 
 <div style="display: flex; justify-content: center; align-items: center; height: 80vh; flex-direction: row;">
-    <a href="{{ url_for('main.sanpedro') }}" class="btn btn-green">SAN PEDRO | SECCIÓN I</a>
-    <a href="{{ url_for('main.sanpedro') }}" class="btn btn-yellow">SAN PEDRO | SECCIÓN II</a>
-    <a href="{{ url_for('main.sanpedro') }}" class="btn btn-red">SAN PEDRO | SECCIÓN III</a>
+    <a href="{{ url_for('main.sanpedro') }}" class="btn btn-green">
+        <strong>SAN PEDRO</strong><br>
+        <span class="seccion-label">SECCIÓN I</span>
+    </a>
+    <a href="{{ url_for('main.sanpedro') }}" class="btn btn-yellow">
+        <strong>SAN PEDRO</strong><br>
+        <span class="seccion-label">SECCIÓN II</span>
+    </a>
+    <a href="{{ url_for('main.sanpedro') }}" class="btn btn-red">
+        <strong>SAN PEDRO</strong><br>
+        <span class="seccion-label"">SECCIÓN III</span>
+    </a>
 </div>
 
 <script>
