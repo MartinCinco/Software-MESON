@@ -1,0 +1,39 @@
+/* CSS HEX */
+--dune: #252321;
+--ecru-white: #fbfbf3;
+--pumpkin-skin: #af6b0d;
+--geebung: #d48d20;
+--dawn: #989693;
+--chalky: #f0cf94;
+--raffia: #ede1c0;
+--sorrell-brown: #cdb38f;
+--alto: #d4d4d4;
+--swiss-coffee: #dcd4d4;
+
+
+/* SCSS HEX */
+$dune: #252321;
+$ecru-white: #fbfbf3;
+$pumpkin-skin: #af6b0d;
+$geebung: #d48d20;
+$dawn: #989693;
+$chalky: #f0cf94;
+$raffia: #ede1c0;
+$sorrell-brown: #cdb38f;
+$alto: #d4d4d4;
+$swiss-coffee: #dcd4d4;
+
+
+/* SCSS RGB */
+--dune: rgba(37,35,33,1);
+--ecru-white: rgba(251,251,243,1);
+--pumpkin-skin: rgba(175,107,13,1);
+--geebung: rgba(212,141,32,1);
+--dawn: rgba(152,150,147,1);
+--chalky: rgba(240,207,148,1);
+--raffia: rgba(237,225,192,1);
+--sorrell-brown: rgba(205,179,143,1);
+--alto: rgba(212,212,212,1);
+--swiss-coffee: rgba(220,212,212,1);
+
+

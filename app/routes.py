@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, request, redirect, url_for, jsonify, session
+from flask import Blueprint, render_template, request, redirect, url_for, jsonify, session, send_from_directory, current_app
+import os
 from .db import get_db_connection
 from .auth import autenticar
 

@@ -6,13 +6,17 @@ ENV/
 .env/
 
 # Archivos compilados de Python
-__pycache__/
+_pycache_/
 *.py[cod]
 *$py.class
+*.pyo
+*.pyd
+*.db
+
 
 # Configuración de entorno
 *.env
-*.env.*
+.env.
 
-# Archivos de logs
+# Archivos de logs
 *.log

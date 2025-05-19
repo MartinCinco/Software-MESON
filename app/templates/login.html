@@ -5,35 +5,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
-        body { display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f5f5f5; }
-        .login-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); text-align: center; width: 300px; }
-        .login-container h2 { margin-bottom: 20px; }
-        .input-group { width: 100%; margin-bottom: 15px; }
-        .input-group label { display: block; text-align: left; font-size: 14px; margin-bottom: 5px; }
-        .input-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
-        .login-button { width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
-        .login-button:hover { background-color: #0056b3; }
-        .error { color: red; font-size: 14px; margin-bottom: 10px; }
+        * { 
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif, Arial, sans-serif;
+        }
+        body { 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+            background-image: url("/static/resources/lg-bg.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat; 
+        }
+        .logo {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 20px;
+        }
+        .login-container {
+            background: #EDE1C0B3;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        .input-group { 
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        .input-group label { 
+            display: block;
+            text-align: left;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            margin-bottom: 5px; 
+        }
+        .input-group input { 
+            width: 100%;
+            padding: 10px;
+            font-family: 'Montserrat', sans-serif;
+            border: 1px solid#cdb38f;
+            border-radius: 5px; 
+            background-color: #f0cf94;
+        }
+        .login-button {
+            width: 100%;
+            padding: 10px;
+            background-color:#d48d20;
+            color: #f0cf94;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer; 
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px; 
+        }
+        .login-button:hover { 
+            background-color: #af6b0d; 
+        }
+        .error { 
+            color: red; 
+            font-size: 14px; 
+            margin-bottom: 10px; 
+        }
     </style>
 </head>
 <body>
     <div class="login-container">
-        <h2>Iniciar Sesión</h2>
+        <img src="{{ url_for('static', filename='resources/logo.png') }}" alt="MESON Logo" class="logo">
         {% if error %}
             <p class="error">{{ error }}</p>
         {% endif %}
         <form action="{{ url_for('main.login') }}" method="post">
             <div class="input-group">
-                <label for="usuario">Usuario</label>
-                <input type="text" id="usuario" name="usuario" placeholder="Usuario" required>
+                <label for="usuario">USUARIO</label>
+                <input type="text" id="usuario" name="usuario" placeholder="" required>
             </div>
             <div class="input-group">
-                <label for="contrasena">Contraseña</label>
-                <input type="password" id="contrasena" name="contrasena" placeholder="Contraseña" required autocomplete="off">
+                <label for="contrasena">CONTRASEÑA</label>
+                <input type="password" id="contrasena" name="contrasena" placeholder="" required autocomplete="off">
             </div>
-            <button type="submit" class="login-button">Ingresar</button>
+            <button type="submit" class="login-button">INGRESAR</button>
         </form>
     </div>
 </body>
