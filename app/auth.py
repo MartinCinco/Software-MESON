@@ -9,4 +9,3 @@ def autenticar(usuario, contrasena):
     resultado = cursor.fetchone()
     conn.close()
     return resultado is not None
-

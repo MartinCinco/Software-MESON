@@ -1,124 +1,303 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>MANTENIMIENTO SAN PEDRO 1</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        header {
-            background-color: #007bff;
-            color: white;
-            padding: 15px;
-            text-align: center;
-        }
-        .container {
-            max-width: 600px;
-            margin: 40px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        label {
-            display: block;
-            margin-top: 15px;
-            font-weight: bold;
-        }
-        input[type="text"] {
-            padding: 8px;
-            margin-top: 5px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-        }
-        /* Estilo para agrupar input y botón lado a lado */
-        .input-with-button {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 5px;
-        }
-        .input-with-button input[type="text"] {
-            flex-grow: 1;
-        }
-        button.btn-search {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 9px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .info {
-            margin-top: 15px;
-        }
-        .info p {
-            margin: 5px 0;
-        }
-        .btn-container {
-            margin-top: 30px;
-            display: flex;
-            justify-content: space-between;
-        }
-        .btn {
-            padding: 10px 20px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            color: white;
-        }
-        .btn-blue {
-            background-color: #007bff;
-        }
-        .btn-grey {
-            background-color: #6c757d;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MANTENIMIENTO SAN PEDRO 1</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    header {
+      background-color: #007bff;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input[type="text"], input[type="date"], input[type="number"], input[type="time"], select {
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .input-with-button {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 5px;
+    }
+    .input-with-button input[type="text"] {
+      flex-grow: 1;
+    }
+    button.btn-search {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 9px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .info {
+      margin-top: 15px;
+    }
+    .info p {
+      margin: 5px 0;
+    }
+    .btn-container {
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .btn {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      color: white;
+    }
+    .btn-blue {
+      background-color: #007bff;
+    }
+    .btn-grey {
+      background-color: #6c757d;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+    }
+    
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+    background: white;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;         /* Limita el alto del modal al 90% del viewport */
+    overflow-y: auto;         /* Scroll solo vertical dentro del modal */
+    box-sizing: border-box;
+    position: relative;
+    }
+
+  </style>
 </head>
 <body>
 
 <header>
-    <h1>MESON</h1>
+  <h1>MESON</h1>
 </header>
 
 <div class="container">
-    <h2>MANTENIMIENTO SAN PEDRO 1</h2>
+  <h2>MANTENIMIENTO SAN PEDRO 1</h2>
 
-    <!-- Formulario que envía los datos al backend -->
-    <form action="{{ url_for('main.buscar_pago') }}" method="post">
-        <label for="nombre">A nombre de:</label>
-        <div class="input-with-button">
-            <input type="text" id="nombre" name="nombre" required />
-            <button type="submit" class="btn-search">Buscar</button>
-        </div>
-
-        <label for="lote">Lote:</label>
-        <input type="text" id="lote" name="lote" />
-
-        <label for="manzana">Manzana:</label>
-        <input type="text" id="manzana" name="manzana" />
-
-        <div class="info">
-            <p><strong>Sección:</strong> [información]</p>
-            <p><strong>Vencimiento:</strong> [información]</p>
-            <p><strong>Cuota Mensual:</strong> [información]</p>
-            <p><strong>Último mes para pagar:</strong> [información]</p>
-        </div>
-    </form>
-    <div class="btn-container">
-        <button class="btn btn-blue">Añadir pago</button>
-        <a href="main.mantenimiento" class="btn btn-grey">Salir</a>
+  <form action="{{ url_for('main.buscar_pago') }}" method="post">
+    <label for="nombre">A nombre de:</label>
+    <div class="input-with-button">
+      <input type="text" id="nombre" name="nombre" />
     </div>
+
+    <label for="lote">Lote:</label>
+    <input type="text" id="lote" name="lote" />
+
+    <label for="manzana">Manzana:</label>
+    <input type="text" id="manzana" name="manzana" />
+
+    <label for="fraccionamiento">Fraccionamiento:</label>
+    <input type="text" id="fraccionamiento" name="fraccionamiento" />
+
+    <div class="input-with-button">
+      <button type="submit" class="btn-search">Buscar</button>
+    </div>
+  </form>
+
+  <div class="info">
+    {% if resultados %}
+      <h3>Resultados encontrados:</h3>
+      {% for r in resultados %}
+        <div class="resultado" style="border:1px solid #ccc; padding:10px; margin-bottom:10px; border-radius:5px;">
+          <p><strong>Nombre:</strong> {{ r['nombre_cliente'] }}</p>
+          <p><strong>Lote:</strong> {{ r['lote'] }}</p>
+          <p><strong>Manzana:</strong> {{ r['manzana'] }}</p>
+          <p><strong>Fraccionamiento:</strong> {{ r['fraccionamiento'] }}</p>
+          <p><strong>Fecha:</strong> {{ r['fecha'] }}</p>
+        </div>
+      {% endfor %}
+    {% elif resultados is not none %}
+      <p>No se encontraron resultados.</p>
+    {% endif %}
+  </div>
+
+  <div class="btn-container">
+    <button class="btn btn-blue" onclick="abrirModalPago()">Añadir pago</button>
+    <a href="{{ url_for('main.mantenimiento') }}" class="btn btn-grey">Salir</a>
+  </div>
 </div>
+
+<!-- MODAL -->
+<div id="modalPago" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="document.getElementById('modalPago').style.display='none'">&times;</span>
+    <h2>Registrar Pago</h2>
+    <form id="formPago" onsubmit="event.preventDefault(); registrarPago();">
+      <label>Nombre</label>
+      <input type="text" id="nombreCliente" readonly>
+
+      <label>Lote</label>
+      <input type="text" id="loteModal" readonly>
+
+      <label>Manzana</label>
+      <input type="text" id="manzanaModal" readonly>
+
+      <label>Fraccionamiento</label>
+      <input type="text" id="fraccionamientoModal" readonly>
+
+      <label>Periodo</label>
+      <input type="text" id="periodo" required>
+
+      <label>Cantidad</label>
+      <input type="number" id="cantidad" required>
+
+      <label>Cerrador</label>
+      <input type="text" id="cerrador">
+
+      <label>Agendador</label>
+      <input type="text" id="agendador">
+
+      <label>Comisión</label>
+      <input type="text" id="comision">
+
+      <label>Pagado</label>
+      <select id="pagado">
+        <option value="PAGADO">PAGADO</option>
+        <option value="CANCELO">CANCELO</option>
+      </select>
+
+      <label>Recibo</label>
+      <input type="text" id="recibo">
+
+      <label>Liquidación</label>
+      <select id="liquidacion">
+        <option value="LIQUIDADO">LIQUIDADO</option>
+        <option value="CANCELO">CANCELO</option>
+      </select>
+
+      <input type="hidden" id="fecha" name="fecha">
+        <input type="hidden" id="hora" name="hora">
+
+      <button type="submit" class="btn btn-blue">Guardar</button>
+    </form>
+  </div>
+</div>
+
+<script>
+function abrirModalPago() {
+  const resultado = document.querySelector('.resultado');
+  if (!resultado) return alert("Primero realiza una búsqueda");
+
+  document.getElementById("nombreCliente").value = resultado.querySelector("p:nth-child(1)").textContent.replace("Nombre:", "").trim();
+  document.getElementById("loteModal").value = resultado.querySelector("p:nth-child(2)").textContent.replace("Lote:", "").trim();
+  document.getElementById("manzanaModal").value = resultado.querySelector("p:nth-child(3)").textContent.replace("Manzana:", "").trim();
+  document.getElementById("fraccionamientoModal").value = resultado.querySelector("p:nth-child(4)").textContent.replace("Fraccionamiento:", "").trim();
+    const now = new Date();
+
+    // Fecha en formato ISO para la base de datos
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    const fechaISO = `${yyyy}-${mm}-${dd}`;
+
+    // Hora en formato hh:mm (24h)
+    const hh = String(now.getHours()).padStart(2, '0');
+    const min = String(now.getMinutes()).padStart(2, '0');
+    const hora = `${hh}:${min}`;
+
+    // Asignar a campos ocultos
+    document.getElementById("fecha").value = fechaISO;
+    document.getElementById("hora").value = hora;
+
+    document.getElementById("modalPago").style.display = "block";
+}
+
+function registrarPago() {
+  const datos = {
+    nombre_cliente: document.getElementById("nombreCliente").value,
+    lote: document.getElementById("loteModal").value,
+    manzana: document.getElementById("manzanaModal").value,
+    fraccionamiento: document.getElementById("fraccionamientoModal").value,
+    periodo: document.getElementById("periodo").value,
+    fecha: document.getElementById("fecha").value,
+    cantidad: document.getElementById("cantidad").value,
+    cerrador: document.getElementById("cerrador").value,
+    agendador: document.getElementById("agendador").value,
+    comision: document.getElementById("comision").value,
+    pagado: document.getElementById("pagado").value,
+    recibo: document.getElementById("recibo").value,
+    liquidacion: document.getElementById("liquidacion").value,
+    hora: document.getElementById("hora").value
+  };
+
+  fetch("/registrar_pago", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(datos)
+  }).then(res => res.json())
+    .then(resp => {
+      if (resp.success) {
+        alert("Pago registrado correctamente.");
+        document.getElementById("modalPago").style.display = "none";
+      } else {
+        alert("Error al registrar: " + resp.error);
+      }
+    }).catch(err => console.error("Error:", err));
+}
+</script>
 
 </body>
 </html>

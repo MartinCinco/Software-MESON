@@ -12,7 +12,7 @@ def login():
         contrasena = request.form['contrasena']
         if autenticar(usuario, contrasena):
             session['usuario'] = usuario
-            return redirect(url_for('main.principal'))
+            return redirect(url_for('main.sanpedro'))
         return render_template('login.html', error="Usuario o contraseña incorrectos")
     return render_template('login.html')
 
@@ -35,16 +35,41 @@ def principal():
 
 @main_routes.route('/buscar_pago', methods=['POST'])
 def buscar_pago():
-    nombre = request.form.get('nombre')
-    lote = request.form.get('lote')
-    manzana = request.form.get('manzana')
-    return render_template('sanpedro1.html', nombre=nombre, lote=lote, manzana=manzana)
+    nombre = request.form.get('nombre', '').strip()
+    lote = request.form.get('lote', '').strip()
+    manzana = request.form.get('manzana', '').strip()
+    fraccionamiento = request.form.get('fraccionamiento', '').strip()
+
+    query = "SELECT * FROM ventas WHERE 1=1"
+    params = []
+
+    if nombre:
+        query += " AND nombre_cliente LIKE ?"
+        params.append(f"%{nombre}%")
+    if lote:
+        query += " AND lote LIKE ?"
+        params.append(f"%{lote}%")
+    if manzana:
+        query += " AND manzana LIKE ?"
+        params.append(f"%{manzana}%")
+    if fraccionamiento:
+        query += " AND fraccionamiento LIKE ?"
+        params.append(f"%{fraccionamiento}%")
+
+    conn = get_db_connection()
+    resultados = conn.execute(query, params).fetchall()
+    conn.close()
+
+    return render_template('sanpedro.html', resultados=resultados)
 
 @main_routes.route('/ventas')
 def ventas():
     if requiere_login():
         return redirect(url_for('main.login'))
-    return render_template('pagModuloVentas.html')
+    conn = get_db_connection()
+    ventas = conn.execute('SELECT * FROM ventas').fetchall()
+    conn.close()
+    return render_template('pagModuloVentas.html', ventas=ventas)
 
 @main_routes.route('/ingresos')
 def ingresos():
@@ -64,7 +89,6 @@ def sanpedro():
         return redirect(url_for('main.login'))
     return render_template('sanpedro.html')
 
-@main_routes.route('/cancelar/<int:id>', methods=['POST'])
 @main_routes.route('/marcar_listo/<int:id>', methods=['POST'])
 def eliminar_cita(id):
     conn = get_db_connection()
@@ -101,3 +125,44 @@ def agregar():
         conn.close()
         return jsonify(success=True, id=nuevo_id)
     return jsonify(success=False)
+
+@main_routes.route('/registrar_pago', methods=['POST'])
+def registrar_pago():
+    data = request.get_json()
+
+    campos = [
+        'periodo', 'fecha', 'nombre_cliente', 'numero', 'lote', 'cantidad',
+        'manzana', 'fraccionamiento', 'cerrador', 'agendador', 'comision',
+        'pagado', 'venta_capturada', 'recibo', 'liquidacion', 'hora'
+    ]
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute(f"""
+            INSERT INTO ventas ({', '.join(campos)})
+            VALUES ({', '.join(['?' for _ in campos])})
+        """, [
+            data.get('periodo'),
+            data.get('fecha'),
+            data.get('nombre_cliente'),
+            data.get('numero', ''),  # Default si falta
+            data.get('lote'),
+            data.get('cantidad'),
+            data.get('manzana'),
+            data.get('fraccionamiento'),
+            data.get('cerrador'),
+            data.get('agendador'),
+            data.get('comision'),
+            data.get('pagado'),
+            'CAPTURADO',  # Valor fijo como placeholder para 'venta_capturada'
+            data.get('recibo'),
+            data.get('liquidacion'),
+            data.get('hora')
+        ])
+        conn.commit()
+        conn.close()
+        return jsonify(success=True)
+    except Exception as e:
+        print("Error al registrar pago:", e)
+        return jsonify(success=False, error=str(e)), 500

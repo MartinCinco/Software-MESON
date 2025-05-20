@@ -146,104 +146,42 @@
     </nav>
 </header>
 
-
-<script>
-    function openEditModal(fecha, descripcion, id) {
-        // Si la fecha viene en formato "dd/mm/yyyy", conviértela a "yyyy-mm-dd" para el input date
-        let fechaISO = fecha;
-        if (fecha.includes("/")) {
-            let partes = fecha.split("/");
-            if (partes.length === 3) {
-                fechaISO = `${partes[2]}-${partes[1].padStart(2, '0')}-${partes[0].padStart(2, '0')}`;
-            }
-        }
-        document.getElementById("editFecha").value = fechaISO;
-        document.getElementById("editDescripcion").value = descripcion;
-        document.getElementById("editIndex").value = id;  // Ahora es id
-        document.getElementById("editModal").style.display = "block";
-    }
-    
-    function guardarModificacion() {
-        let id = document.getElementById("editIndex").value;
-        let nuevaFecha = document.getElementById("editFecha").value;
-        let nuevaDescripcion = document.getElementById("editDescripcion").value;
-    
-        console.log("Enviando modificación:", id, nuevaFecha, nuevaDescripcion);
-    
-        fetch(`/modificar/${id}`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ nueva_fecha: nuevaFecha, nueva_descripcion: nuevaDescripcion })
-        }).then(response => response.json())
-          .then(data => {
-              console.log("Respuesta del servidor:", data);
-              if (data.success) {
-                  let cita = document.getElementById(`cita-${id}`);
-                  cita.querySelector("span").textContent = `${nuevaFecha} - ${nuevaDescripcion}`;
-                  document.getElementById("editModal").style.display = "none";
-              } else {
-                  alert("Error al modificar la cita: " + data.error);
-              }
-          });
-    }
-    
-    function cancelarCita(id) {
-        fetch(`/cancelar/${id}`, { method: "POST" })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    document.getElementById(`cita-${id}`).remove();
-                } else {
-                    alert("Error: " + data.error);
-                }
-            });
-    }
-    
-    function marcarListo(id) {
-        fetch(`/marcar_listo/${id}`, { method: "POST" })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    document.getElementById(`cita-${id}`).remove();
-                } else {
-                    alert("Error: " + data.error);
-                }
-            });
-    }
-    
-    function agregarCita() {
-        let fecha = document.getElementById("addFecha").value;
-        let descripcion = document.getElementById("addDescripcion").value;
-    
-        fetch("/agregar", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ fecha: fecha, descripcion: descripcion })
-        }).then(response => response.json())
-          .then(data => {
-              if (data.success) {
-                  let citasContainer = document.querySelector(".container2");
-                  let nuevaCita = document.createElement("div");
-                  nuevaCita.classList.add("cita");
-                  nuevaCita.id = `cita-${data.id}`;
-                  nuevaCita.innerHTML = `
-                      <span>${fecha} - ${descripcion}</span>
-                      <div>
-                          <button class="btn btn-green" onclick="marcarListo(${data.id})">✔</button>
-                          <button class="btn btn-red" onclick="cancelarCita(${data.id})">✖</button>
-                          <button class="btn btn-yellow" onclick="openEditModal('${fecha}', '${descripcion}', ${data.id})">📝</button>
-                      </div>
-                  `;
-                  citasContainer.appendChild(nuevaCita);
-    
-                  document.getElementById("addFecha").value = "";
-                  document.getElementById("addDescripcion").value = "";
-                  document.getElementById("addModal").style.display = "none";
-              } else {
-                  alert("Error al agregar la cita. Intenta de nuevo.");
-              }
-          }).catch(error => console.error("Error:", error));
-    }           
-</script>    
+<main style="padding: 20px; font-family: Arial, sans-serif;">
+    <h2>Desglose de Ventas</h2>
+    {% if ventas %}
+        <table style="width:100%; border-collapse: collapse; margin-top: 20px;">
+            <thead>
+                <tr style="background-color: #007bff; color: white;">
+                    <th style="padding: 10px; border: 1px solid #ddd;">ID</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Fecha</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Cliente</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Fraccionamiento</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Lote</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Manzana</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Cantidad</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Pagado</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Comisión</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for v in ventas %}
+                <tr style="background-color: {{ loop.index0 % 2 == 0 and '#f9f9f9' or '#ffffff' }};">
+                    <td style="padding: 8px; border: 1px solid #ddd;">{{ v['id'] }}</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">{{ v['fecha'] }}</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">{{ v['nombre_cliente'] }}</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">{{ v['fraccionamiento'] }}</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">{{ v['lote'] }}</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">{{ v['manzana'] }}</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">{{ v['cantidad'] }}</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">{{ 'Sí' if v['pagado'] else 'No' }}</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">${{ v['comision'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No hay ventas registradas.</p>
+    {% endif %}
+</main>
 </body>
 </html>
