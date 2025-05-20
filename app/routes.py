@@ -12,7 +12,7 @@ def login():
         contrasena = request.form['contrasena']
         if autenticar(usuario, contrasena):
             session['usuario'] = usuario
-            return redirect(url_for('main.sanpedro'))
+            return redirect(url_for('main.principal'))
         return render_template('login.html', error="Usuario o contraseña incorrectos")
     return render_template('login.html')
 
