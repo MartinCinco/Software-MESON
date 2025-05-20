@@ -232,7 +232,7 @@
         <div>
             <button class="btn btn-green" onclick="marcarListo({{ cita.id }})">✔</button>
             <button class="btn btn-red" onclick="cancelarCita({{ cita.id }})">✖</button>
-            <button class="btn btn-yellow" onclick="openEditModal('{{ cita.fecha }}', '{{ cita.descripcion }}', {{ cita.id }})">📝</button>
+            <button class="btn btn-yellow" onclick="openEditModal('{{ cita.fecha }}', '{{ cita.descripcion }}', '{{ cita.id }}')">📝</button>
         </div>
     </div>
     {% endfor %}
