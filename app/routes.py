@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify, session, send_from_directory, current_app
 import os
+import subprocess
 from .db import get_db_connection
 from .auth import autenticar
 
@@ -12,7 +13,7 @@ def login():
         contrasena = request.form['contrasena']
         if autenticar(usuario, contrasena):
             session['usuario'] = usuario
-            return redirect(url_for('main.sanpedro'))
+            return redirect(url_for('main.principal'))
         return render_template('login.html', error="Usuario o contraseña incorrectos")
     return render_template('login.html')
 
@@ -71,12 +72,6 @@ def ventas():
     conn.close()
     return render_template('pagModuloVentas.html', ventas=ventas)
 
-@main_routes.route('/ingresos')
-def ingresos():
-    if requiere_login():
-        return redirect(url_for('main.login'))
-    return render_template('pagModuloIngresoEgreso.html')
-
 @main_routes.route('/mantenimiento')
 def mantenimiento():
     if requiere_login():
@@ -89,6 +84,7 @@ def sanpedro():
         return redirect(url_for('main.login'))
     return render_template('sanpedro.html')
 
+@main_routes.route('/cancelar/<int:id>', methods=['POST'])
 @main_routes.route('/marcar_listo/<int:id>', methods=['POST'])
 def eliminar_cita(id):
     conn = get_db_connection()
@@ -146,7 +142,7 @@ def registrar_pago():
             data.get('periodo'),
             data.get('fecha'),
             data.get('nombre_cliente'),
-            data.get('numero', ''),  # Default si falta
+            data.get('numero', ''), 
             data.get('lote'),
             data.get('cantidad'),
             data.get('manzana'),
@@ -166,3 +162,8 @@ def registrar_pago():
     except Exception as e:
         print("Error al registrar pago:", e)
         return jsonify(success=False, error=str(e)), 500
+
+@main_routes.route('/generar_segmentacion')
+def generar_segmentacion():
+    subprocess.run(['python3', 'segmentacion.py'])
+    return "Análisis completado"
