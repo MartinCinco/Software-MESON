@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MANTENIMIENTO SAN PEDRO 1</title>
+  <title>MANTENIMIENTO SAN PEDRO</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -24,7 +24,7 @@
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      background-attachment: fixed; /* <-- Esto es lo importante */
+      background-attachment: fixed;
       background-color: #f4f4f4;
     }
     header {
@@ -173,8 +173,8 @@
     border-radius: 10px;
     width: 90%;
     max-width: 500px;
-    max-height: 90vh;         /* Limita el alto del modal al 90% del viewport */
-    overflow-y: auto;         /* Scroll solo vertical dentro del modal */
+    max-height: 90vh;
+    overflow-y: auto;
     box-sizing: border-box;
     position: relative;
     }
@@ -188,7 +188,7 @@
 </header>
 
 <div class="container">
-  <h2>MANTENIMIENTO SAN PEDRO | SECCIÓN I</h2>
+  <h2>MANTENIMIENTO | <span style="font-weight:normal;">SAN PEDRO</span></h2>
 
   <form action="{{ url_for('main.buscar_pago') }}" method="post">
     <label for="nombre">A nombre de:</label>

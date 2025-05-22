@@ -93,6 +93,7 @@ def eliminar_cita(id):
     conn.close()
     return jsonify(success=True)
 
+@main_routes.route('/cancelar/<int:id>', methods=['POST'])
 @main_routes.route('/modificar/<int:id>', methods=['POST'])
 def modificar(id):
     data = request.json
