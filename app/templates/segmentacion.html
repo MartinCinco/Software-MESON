@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Segmentación de Clientes</title>
     <link rel="icon" href="{{ url_for('static', filename='resources/logo-wl.png') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Montserrat', sans-serif;
             background-image: url("{{ url_for('static', filename='resources/lg-bg.png') }}");
             background-size: cover;
             background-repeat: no-repeat;
@@ -69,8 +70,8 @@
             align-self: center;
         }
         .container2 {
-            width: 80%;
-            margin: auto;
+            width: 50%;
+            margin: 40px auto 0 auto;
             padding: 20px;
             background: rgba(237, 225, 192, 0.7);
             border-radius: 10px;
@@ -90,6 +91,7 @@
         form input[type="number"],
         form select {
             width: 100%;
+            box-sizing: border-box;
             padding: 8px;
             margin-top: 5px;
             margin-bottom: 10px;
@@ -129,21 +131,21 @@
     </nav>
 </header>
 <div class="container2">
-    <h2>Configuración de Segmentación</h2>
+    <h2>CONFIGURACIÓN DE SEGMENTACIÓN</h2>
     <form method="POST" action="/segmentar_clientes">
-        <label>Nombre del cliente (opcional):</label>
+        <label>Nombre del Cliente (OPCIONAL):</label>
         <input type="text" name="cliente">
 
-        <label>Fraccionamiento (opcional):</label>
+        <label>Fraccionamiento (OPCIONAL):</label>
         <input type="text" name="fraccionamiento">
 
-        <label>Fecha mínima:</label>
+        <label>Fecha Mínima:</label>
         <input type="date" name="fecha_min">
 
-        <label>Fecha máxima:</label>
+        <label>Fecha Máxima:</label>
         <input type="date" name="fecha_max">
 
-        <label>Variables a usar:</label>
+        <label>Variables:</label>
         <div class="checkbox-group">
             <input type="checkbox" name="vars" value="comision" checked> Comisión
             <input type="checkbox" name="vars" value="cantidad" checked> Cantidad
@@ -158,7 +160,7 @@
             <option value="dbscan">DBSCAN</option>
         </select>
 
-        <label>Número de clusters (solo KMeans):</label>
+        <label>Número de Clusters (solo KMeans):</label>
         <input type="number" name="num_clusters" min="2" max="10" value="3">
 
         <label>Exportar:</label>
@@ -167,7 +169,7 @@
             <input type="checkbox" name="exportar_pdf" checked> Exportar PDF
         </div>
 
-        <button type="submit">Ejecutar Segmentación</button>
+        <button type="submit">EJECUTAR SEGMENTACIÓN</button>
     </form>
 </div>
 </body>
