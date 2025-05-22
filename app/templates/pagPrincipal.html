@@ -213,18 +213,11 @@
     <nav>
         <a href="{{ url_for('main.principal') }}">INICIO</a>
         <a href="{{ url_for('main.ventas') }}">VENTAS</a>
-        <a href="{{ url_for('main.sanpedro') }}">MANTENIMIENTO & GASTOS</a>
+        <a href="{{ url_for('main.sanpedro') }}">MANTENIMIENTO</a>
         <a href="{{ url_for('main.vista_segmentacion') }}">ANALISIS DE CLIENTES</a>
         <a href="{{ url_for('main.logout') }}">CERRAR SESIÓN</a>
     </nav>
 </header>
-
-<div class="container">
-    <div class="card"><h2>Ingresos</h2><p>$50,000</p></div>
-    <div class="card"><h2>Egresos</h2><p>$20,000</p></div>
-    <div class="card"><h2>Utilidad Neta</h2><p>$30,000</p></div>
-</div>
-
 <div class="container2">
     <h2>CITAS PRÓXIMAS</h2>
     {% for cita in citas %}

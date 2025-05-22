@@ -281,16 +281,10 @@
 
 <header>
     <img src="{{ url_for('static', filename='resources/logo-wl.png') }}" alt="MESON Logo" class="logo">
-  <nav>
-      <a href="{{ url_for('main.principal') }}">INICIO</a>
-      <a href="{{ url_for('main.ventas') }}">VENTAS</a>
-      <a href="{{ url_for('main.sanpedro') }}">MANTENIMIENTO & GASTOS</a>
-      <a href="{{ url_for('main.logout') }}">CERRAR SESIÓN</a>
-  </nav>
     <nav>
         <a href="{{ url_for('main.principal') }}">INICIO</a>
         <a href="{{ url_for('main.ventas') }}">VENTAS</a>
-        <a href="{{ url_for('main.sanpedro') }}">MANTENIMIENTO & GASTOS</a>
+        <a href="{{ url_for('main.sanpedro') }}">MANTENIMIENTO</a>
         <a href="{{ url_for('main.vista_segmentacion') }}">ANALISIS DE CLIENTES</a>
         <a href="{{ url_for('main.logout') }}">CERRAR SESIÓN</a>
     </nav>
@@ -311,7 +305,7 @@
     <label for="manzana">Manzana (Mz):</label>
     <input type="text" id="manzana" name="manzana" value="{{ manzana }}"/>
 
-    <label for="fraccionamiento">Fraccionamiento:</label>
+    <label for="fraccionamiento">Seccion:</label>
     <input type="text" id="fraccionamiento" name="fraccionamiento" value="{{ fraccionamiento }}"/>
 
     <div class="acciones-container">
@@ -331,7 +325,7 @@
               <p><strong>Nombre:</strong> {{ resultados[i]['nombre_cliente'] }}</p>
               <p><strong>Lote (Lt):</strong> {{ resultados[i]['lote'] }}</p>
               <p><strong>Manzana (Mz):</strong> {{ resultados[i]['manzana'] }}</p>
-              <p><strong>Fraccionamiento:</strong> {{ resultados[i]['fraccionamiento'] }}</p>
+              <p><strong>Seccion:</strong> {{ resultados[i]['fraccionamiento'] }}</p>
               <p><strong>Fecha:</strong> {{ resultados[i]['fecha'] }}</p>
             {% endif %}
           </div>
@@ -340,7 +334,7 @@
               <p><strong>Nombre:</strong> {{ resultados[i+1]['nombre_cliente'] }}</p>
               <p><strong>Lote (Lt):</strong> {{ resultados[i+1]['lote'] }}</p>
               <p><strong>Manzana (Mz):</strong> {{ resultados[i+1]['manzana'] }}</p>
-              <p><strong>Fraccionamiento:</strong> {{ resultados[i+1]['fraccionamiento'] }}</p>
+              <p><strong>Seccion:</strong> {{ resultados[i+1]['fraccionamiento'] }}</p>
               <p><strong>Fecha:</strong> {{ resultados[i+1]['fecha'] }}</p>
             {% endif %}
           </div>
@@ -400,7 +394,7 @@
       <label>Manzana (Mz)</label>
       <input type="text" id="manzanaModal" readonly>
 
-      <label>Fraccionamiento</label>
+      <label>Seccion</label>
       <input type="text" id="fraccionamientoModal" readonly>
 
       <label>Periodo</label>
