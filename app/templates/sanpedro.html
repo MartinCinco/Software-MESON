@@ -184,7 +184,14 @@
 <body>
 
 <header>
-  <img src="{{ url_for('static', filename='resources/logo-wl.png') }}" alt="MESON Logo" class="logo">
+    <img src="{{ url_for('static', filename='resources/logo-wl.png') }}" alt="MESON Logo" class="logo">
+    <nav>
+        <a href="{{ url_for('main.principal') }}">INICIO</a>
+        <a href="{{ url_for('main.ventas') }}">VENTAS</a>
+        <a href="{{ url_for('main.sanpedro') }}">MANTENIMIENTO & GASTOS</a>
+        <a href="{{ url_for('main.vista_segmentacion') }}">ANALISIS DE CLIENTES</a>
+        <a href="{{ url_for('main.logout') }}">CERRAR SESIÓN</a>
+    </nav>
 </header>
 
 <div class="container">

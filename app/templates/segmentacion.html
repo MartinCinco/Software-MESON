@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Segmentación de Clientes</title>
+    <link rel="icon" href="{{ url_for('static', filename='resources/logo-wl.png') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("{{ url_for('static', filename='resources/lg-bg.png') }}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+        }
+        html, body {
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+        background-image: url("/static/resources/lg-bg.png");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed; /* <-- Esto es lo importante */
+        background-color: #f4f4f4;
+        }
+        header {
+            background-color: #EDE1C0B3;
+            color: white;
+            padding: 0px;
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            height: 100px;
+        }
+        nav {
+            display: flex;
+            height: 100%;
+        }
+        nav a {
+            color: black;
+            background: none;
+            padding: 0px 28px;
+            margin: 0;
+            border-radius: 0;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+            box-shadow: none;
+            border: none;
+            display: flex;
+            align-items: center;
+            height:100%;
+        }
+        nav a:hover {
+            background: #af6b0d;
+            color: #f0cf94;
+            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.12);
+            text-decoration: none;
+        }
+        .logo {
+            width: 75px;
+            height: 75px;
+            margin-top: 12.5px;
+            margin-bottom: 12.5px;
+            margin-left: 20px;
+            align-self: center;
+        }
+        .container2 {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background: rgba(237, 225, 192, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .container2 h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        form label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        form input[type="text"],
+        form input[type="date"],
+        form input[type="number"],
+        form select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #cdb38f;
+            border-radius: 4px;
+            background-color: #f0cf94;
+        }
+        form .checkbox-group {
+            margin-bottom: 15px;
+        }
+        form .checkbox-group input {
+            margin-right: 5px;
+        }
+        button {
+            background-color: #d48d20;
+            color: #f0cf94;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #af6b0d;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <img src="{{ url_for('static', filename='resources/logo-wl.png') }}" alt="MESON Logo" class="logo">
+    <nav>
+        <a href="{{ url_for('main.principal') }}">INICIO</a>
+        <a href="{{ url_for('main.ventas') }}">VENTAS</a>
+        <a href="{{ url_for('main.sanpedro') }}">MANTENIMIENTO & GASTOS</a>
+        <a href="{{ url_for('main.vista_segmentacion') }}">ANÁLISIS DE CLIENTES</a>
+        <a href="{{ url_for('main.logout') }}">CERRAR SESIÓN</a>
+    </nav>
+</header>
+<div class="container2">
+    <h2>Configuración de Segmentación</h2>
+    <form method="POST" action="/segmentar_clientes">
+        <label>Nombre del cliente (opcional):</label>
+        <input type="text" name="cliente">
+
+        <label>Fraccionamiento (opcional):</label>
+        <input type="text" name="fraccionamiento">
+
+        <label>Fecha mínima:</label>
+        <input type="date" name="fecha_min">
+
+        <label>Fecha máxima:</label>
+        <input type="date" name="fecha_max">
+
+        <label>Variables a usar:</label>
+        <div class="checkbox-group">
+            <input type="checkbox" name="vars" value="comision" checked> Comisión
+            <input type="checkbox" name="vars" value="cantidad" checked> Cantidad
+            <input type="checkbox" name="vars" value="recencia_dias" checked> Recencia
+            <input type="checkbox" name="vars" value="estatus_pago"> Estatus Pago
+            <input type="checkbox" name="vars" value="estatus_liquidacion"> Estatus Liquidación
+        </div>
+
+        <label>Algoritmo:</label>
+        <select name="algoritmo">
+            <option value="kmeans">KMeans</option>
+            <option value="dbscan">DBSCAN</option>
+        </select>
+
+        <label>Número de clusters (solo KMeans):</label>
+        <input type="number" name="num_clusters" min="2" max="10" value="3">
+
+        <label>Exportar:</label>
+        <div class="checkbox-group">
+            <input type="checkbox" name="exportar_csv" checked> Exportar CSV
+            <input type="checkbox" name="exportar_pdf" checked> Exportar PDF
+        </div>
+
+        <button type="submit">Ejecutar Segmentación</button>
+    </form>
+</div>
+</body>
+</html>

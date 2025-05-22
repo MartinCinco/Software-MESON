@@ -167,3 +167,28 @@ def registrar_pago():
 def generar_segmentacion():
     subprocess.run(['python3', 'segmentacion.py'])
     return "Análisis completado"
+
+@main_routes.route('/segmentacion')
+def vista_segmentacion():
+    if requiere_login():
+        return redirect(url_for('main.login'))
+    return render_template('segmentacion.html')
+
+@main_routes.route('/segmentar_clientes', methods=['POST'])
+def procesar_segmentacion():
+    from .procesamiento.segmentacion_filtros import ejecutar_segmentacion
+
+    filtros = {
+        'cliente': request.form.get('cliente'),
+        'fraccionamiento': request.form.get('fraccionamiento'),
+        'fecha_min': request.form.get('fecha_min'),
+        'fecha_max': request.form.get('fecha_max'),
+        'variables': request.form.getlist('vars'),
+        'algoritmo': request.form.get('algoritmo'),
+        'num_clusters': int(request.form.get('num_clusters', 3)),
+        'exportar_csv': 'exportar_csv' in request.form,
+        'exportar_pdf': 'exportar_pdf' in request.form
+    }
+
+    ejecutar_segmentacion(filtros)
+    return render_template('resultado_segmentacion.html', filtros=filtros)
