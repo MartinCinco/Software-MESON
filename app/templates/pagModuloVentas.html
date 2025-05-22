@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MESON</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='resources/logo-wl.png') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family:  'Montserrat', sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
@@ -17,10 +19,15 @@
             background-repeat: no-repeat;
         }
         html, body {
-            height: 100%;
             min-height: 100vh;
             margin: 0;
             padding: 0;
+            background-image: url("/static/resources/lg-bg.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: #f4f4f4;
         }
         header {
             background-color: #EDE1C0B3;
@@ -64,6 +71,11 @@
             margin-bottom: 12.5px;
             margin-left: 20px;
             align-self: center;
+        }
+        table {
+            border-radius: 10px;
+            overflow: hidden;
+            border: none;
         }
         .container {
             margin: 20px;
@@ -131,6 +143,46 @@
             font-size: 24px;
             cursor: pointer;
         }
+        .pagination {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+        .pagination span {
+            font-weight: bold;
+        }
+        .pagination a {
+            display: inline-block;
+            width: 135px;
+            height: 36px;
+            padding: 6px 14px;
+            border-radius: 5px;
+            border: none;
+            font-weight: bold;
+            box-sizing: border-box;
+            text-align: center;
+            vertical-align: middle;
+            background-color: #d48d20;
+            color: #f0cf94;
+            text-decoration: none;
+        }
+        .pagination .placeholder {
+            display: inline-block;
+            width: 135px;
+            height: 36px;
+            padding: 6px 14px;
+            border-radius: 5px;
+            box-sizing: border-box;
+            background: transparent;
+            color: transparent;
+            border: none;
+            cursor: default;
+        }
+        .pagination a:hover {
+            background-color: #af6b0d; 
+        }
     </style>
 </head>
 <body>
@@ -146,26 +198,28 @@
     </nav>
 </header>
 
-<main style="padding: 20px; font-family: Arial, sans-serif;">
-    <h2>Desglose de Ventas</h2>
+<main style="padding: 20px; font-family:  'Montserrat', sans-serif;">
     {% if ventas %}
+        <div style="background-color: rgba(237,225,192,0.7); color: #252321; font-size: 1.5em; padding: 18px 0 10px 0; border-radius: 10px; margin-bottom: -10px; border: none; width:100%;">
+            <h3>DESGLOCE DE VENTAS</h3>
+        </div>
         <table style="width:100%; border-collapse: collapse; margin-top: 20px;">
             <thead>
-                <tr style="background-color: #007bff; color: white;">
-                    <th style="padding: 10px; border: 1px solid #ddd;">ID</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Fecha</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Cliente</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Fraccionamiento</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Lote</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Manzana</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Cantidad</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Pagado</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Comisión</th>
+                <tr style="background-color: #af6b0d; color: f0cf94;">
+                    <th style="padding: 10px; border: none;">ID</th>
+                    <th style="padding: 10px; border: none;">Fecha</th>
+                    <th style="padding: 10px; border: none;">Cliente</th>
+                    <th style="padding: 10px; border: none;">Fraccionamiento</th>
+                    <th style="padding: 10px; border: none;">Lote</th>
+                    <th style="padding: 10px; border: none;">Manzana</th>
+                    <th style="padding: 10px; border: none;">Cantidad</th>
+                    <th style="padding: 10px; border: none;">Pagado</th>
+                    <th style="padding: 10px; border: none;">Comisión</th>
                 </tr>
             </thead>
             <tbody>
                 {% for v in ventas %}
-                <tr style="background-color: {{ loop.index0 % 2 == 0 and '#f9f9f9' or '#ffffff' }};">
+                <tr style="background-color: {{ loop.index0 % 2 == 0 and 'rgba(249, 249, 249, 0.7)' or 'rgba(237, 225, 192, 0.7)' }};">
                     <td style="padding: 8px; border: 1px solid #ddd;">{{ v['id'] }}</td>
                     <td style="padding: 8px; border: 1px solid #ddd;">{{ v['fecha'] }}</td>
                     <td style="padding: 8px; border: 1px solid #ddd;">{{ v['nombre_cliente'] }}</td>
@@ -177,11 +231,29 @@
                     <td style="padding: 8px; border: 1px solid #ddd;">${{ v['comision'] }}</td>
                 </tr>
                 {% endfor %}
-            </tbody>
+            </tbody style="background-color: transparent;">
         </table>
     {% else %}
         <p>No hay ventas registradas.</p>
     {% endif %}
+
+{% if total_pages > 1 %}
+  <div style="background-color: rgba(237,225,192,0.7); border-radius: 10px; margin: 20px auto 0 auto; padding: 12px 24px; width: fit-content; box-sizing: border-box;">
+    <div class="pagination">
+      {% if page > 1 %}
+        <a href="{{ url_for('main.ventas', page=page-1) }}">&laquo;ANTERIOR</a>
+      {% else %}
+        <span class="placeholder"></span>
+      {% endif %}
+      <span>Página {{ page }} de {{ total_pages }}</span>
+      {% if page < total_pages %}
+        <a href="{{ url_for('main.ventas', page=page+1) }}">SIGUIENTE &raquo;</a>
+      {% else %}
+        <span class="placeholder"></span>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
 </main>
 </body>
 </html>
