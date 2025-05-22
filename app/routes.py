@@ -34,43 +34,93 @@ def principal():
     conn.close()
     return render_template('pagPrincipal.html', citas=citas)
 
-@main_routes.route('/buscar_pago', methods=['POST'])
+@main_routes.route('/buscar_pago', methods=['GET', 'POST'])
 def buscar_pago():
-    nombre = request.form.get('nombre', '').strip()
-    lote = request.form.get('lote', '').strip()
-    manzana = request.form.get('manzana', '').strip()
-    fraccionamiento = request.form.get('fraccionamiento', '').strip()
+    if request.method == 'POST':
+        page = int(request.form.get('page', 1))
+        nombre = request.form.get('nombre', '').strip()
+        lote = request.form.get('lote', '').strip()
+        manzana = request.form.get('manzana', '').strip()
+        fraccionamiento = request.form.get('fraccionamiento', '').strip()
+    else:
+        page = int(request.args.get('page', 1))
+        nombre = request.args.get('nombre', '').strip()
+        lote = request.args.get('lote', '').strip()
+        manzana = request.args.get('manzana', '').strip()
+        fraccionamiento = request.args.get('fraccionamiento', '').strip()
+
+    per_page = 10
+    offset = (page - 1) * per_page
 
     query = "SELECT * FROM ventas WHERE 1=1"
+    count_query = "SELECT COUNT(*) FROM ventas WHERE 1=1"
     params = []
+    count_params = []
 
     if nombre:
         query += " AND nombre_cliente LIKE ?"
+        count_query += " AND nombre_cliente LIKE ?"
         params.append(f"%{nombre}%")
+        count_params.append(f"%{nombre}%")
     if lote:
         query += " AND lote LIKE ?"
+        count_query += " AND lote LIKE ?"
         params.append(f"%{lote}%")
+        count_params.append(f"%{lote}%")
     if manzana:
         query += " AND manzana LIKE ?"
+        count_query += " AND manzana LIKE ?"
         params.append(f"%{manzana}%")
+        count_params.append(f"%{manzana}%")
     if fraccionamiento:
         query += " AND fraccionamiento LIKE ?"
+        count_query += " AND fraccionamiento LIKE ?"
         params.append(f"%{fraccionamiento}%")
+        count_params.append(f"%{fraccionamiento}%")
+
+    query += " LIMIT ? OFFSET ?"
+    params.extend([per_page, offset])
 
     conn = get_db_connection()
     resultados = conn.execute(query, params).fetchall()
+    total = conn.execute(count_query, count_params).fetchone()[0]
     conn.close()
 
-    return render_template('sanpedro.html', resultados=resultados)
+    total_pages = (total + per_page - 1) // per_page
+
+    return render_template(
+        'sanpedro.html',
+        resultados=resultados,
+        page=page,
+        total_pages=total_pages,
+        nombre=nombre,
+        lote=lote,
+        manzana=manzana,
+        fraccionamiento=fraccionamiento
+    )
 
 @main_routes.route('/ventas')
 def ventas():
-    if requiere_login():
-        return redirect(url_for('main.login'))
+    page = int(request.args.get('page', 1))
+    per_page = 50
+    offset = (page - 1) * per_page
+
+    query = "SELECT * FROM ventas ORDER BY fecha DESC LIMIT ? OFFSET ?"
+    count_query = "SELECT COUNT(*) FROM ventas"
+
     conn = get_db_connection()
-    ventas = conn.execute('SELECT * FROM ventas').fetchall()
+    ventas = conn.execute(query, (per_page, offset)).fetchall()
+    total = conn.execute(count_query).fetchone()[0]
     conn.close()
-    return render_template('pagModuloVentas.html', ventas=ventas)
+
+    total_pages = (total + per_page - 1) // per_page
+
+    return render_template(
+        'pagModuloVentas.html',
+        ventas=ventas,
+        page=page,
+        total_pages=total_pages
+    )
 
 @main_routes.route('/mantenimiento')
 def mantenimiento():
@@ -82,7 +132,16 @@ def mantenimiento():
 def sanpedro():
     if requiere_login():
         return redirect(url_for('main.login'))
-    return render_template('sanpedro.html')
+    return render_template(
+        'sanpedro.html',
+        resultados=None,
+        page=1,
+        total_pages=0,
+        nombre='',
+        lote='',
+        manzana='',
+        fraccionamiento=''
+    )
 
 @main_routes.route('/cancelar/<int:id>', methods=['POST'])
 @main_routes.route('/marcar_listo/<int:id>', methods=['POST'])
