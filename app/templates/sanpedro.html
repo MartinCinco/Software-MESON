@@ -441,9 +441,9 @@ function abrirModalPago() {
   if (!resultado) return alert("Primero realiza una búsqueda");
 
   document.getElementById("nombreCliente").value = resultado.querySelector("p:nth-child(1)").textContent.replace("Nombre:", "").trim();
-  document.getElementById("loteModal").value = resultado.querySelector("p:nth-child(2)").textContent.replace("Lote:", "").trim();
-  document.getElementById("manzanaModal").value = resultado.querySelector("p:nth-child(3)").textContent.replace("Manzana:", "").trim();
-  document.getElementById("fraccionamientoModal").value = resultado.querySelector("p:nth-child(4)").textContent.replace("Fraccionamiento:", "").trim();
+  document.getElementById("loteModal").value = resultado.querySelector("p:nth-child(2)").textContent.replace("Lote (Lt):", "").trim();
+  document.getElementById("manzanaModal").value = resultado.querySelector("p:nth-child(3)").textContent.replace("Manzana (Mz):", "").trim();
+  document.getElementById("fraccionamientoModal").value = resultado.querySelector("p:nth-child(4)").textContent.replace("Seccion:", "").trim();
     const now = new Date();
 
     // Fecha en formato ISO para la base de datos
