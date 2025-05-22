@@ -206,29 +206,22 @@
         <table style="width:100%; border-collapse: collapse; margin-top: 20px;">
             <thead>
                 <tr style="background-color: #af6b0d; color: f0cf94;">
-                    <th style="padding: 10px; border: none;">ID</th>
                     <th style="padding: 10px; border: none;">Fecha</th>
                     <th style="padding: 10px; border: none;">Cliente</th>
                     <th style="padding: 10px; border: none;">Fraccionamiento</th>
                     <th style="padding: 10px; border: none;">Lote</th>
                     <th style="padding: 10px; border: none;">Manzana</th>
-                    <th style="padding: 10px; border: none;">Cantidad</th>
-                    <th style="padding: 10px; border: none;">Pagado</th>
-                    <th style="padding: 10px; border: none;">Comisión</th>
                 </tr>
             </thead>
             <tbody>
                 {% for v in ventas %}
                 <tr style="background-color: {{ loop.index0 % 2 == 0 and 'rgba(249, 249, 249, 0.7)' or 'rgba(237, 225, 192, 0.7)' }};">
-                    <td style="padding: 8px; border: 1px solid #ddd;">{{ v['id'] }}</td>
+                    
                     <td style="padding: 8px; border: 1px solid #ddd;">{{ v['fecha'] }}</td>
                     <td style="padding: 8px; border: 1px solid #ddd;">{{ v['nombre_cliente'] }}</td>
                     <td style="padding: 8px; border: 1px solid #ddd;">{{ v['fraccionamiento'] }}</td>
                     <td style="padding: 8px; border: 1px solid #ddd;">{{ v['lote'] }}</td>
                     <td style="padding: 8px; border: 1px solid #ddd;">{{ v['manzana'] }}</td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">{{ v['cantidad'] }}</td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">{{ 'Sí' if v['pagado'] else 'No' }}</td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">${{ v['comision'] }}</td>
                 </tr>
                 {% endfor %}
             </tbody style="background-color: transparent;">

@@ -105,7 +105,7 @@ def ventas():
     per_page = 50
     offset = (page - 1) * per_page
 
-    query = "SELECT * FROM ventas ORDER BY fecha DESC LIMIT ? OFFSET ?"
+    query = "SELECT fecha, nombre_cliente, fraccionamiento, lote, manzana FROM ventas ORDER BY fecha DESC LIMIT ? OFFSET ?"
     count_query = "SELECT COUNT(*) FROM ventas"
 
     conn = get_db_connection()
